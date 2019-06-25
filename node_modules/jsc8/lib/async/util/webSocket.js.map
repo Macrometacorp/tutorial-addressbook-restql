@@ -1,0 +1,1 @@
+{"version":3,"file":"webSocket.js","sourceRoot":"","sources":["../../../src/util/webSocket.ts"],"names":[],"mappings":";;AAAA,MAAM,UAAU,GAAG,OAAO,CAAC,IAAI,CAAC,CAAC;AAEjC,YAAmB,GAAW;IAC1B,OAAO,IAAI,UAAU,CAAC,GAAG,CAAC,CAAC;AAC/B,CAAC;AAFD,gBAEC","sourcesContent":["const socketConn = require('ws');\n\nexport function ws(url: string) {\n    return new socketConn(url);\n}"]}
