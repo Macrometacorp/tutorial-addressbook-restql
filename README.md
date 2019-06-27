@@ -9,22 +9,6 @@ Demo to show custom C8Fn and real-time capabilities of C8.
 
 The following have to be present in the federation before starting the UI or else the network calls will fail crashing the app.
 
-```js
-tenant: demo
-```
-
-Login with `demo` tenant and create the following:
-
-```js
-fabric: addressbook
-```
-
-Then login with `demo` tenant, `root` and `addressbook` fabric and create the following:
-
-```js
-collection: addresses
-```
-
 The federation url has to be provided in `Config.js` file. The user will then be asked to select one of the following regions in the GUI.
 
 ```js
@@ -49,3 +33,8 @@ const Config = {
 If `node_modules` is not there, execute `npm install`.
 
 Once all the node modules have been installed execute `npm start` to start the development server. This will start a local development server on `localhost:<some_port>`.
+
+# 4. On starting the App
+
+On starting the app, enter valid fabric, tenant, user and password.
+Select the required region.
