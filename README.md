@@ -34,7 +34,7 @@ If `node_modules` is not there, execute `npm install`.
 
 Once all the node modules have been installed execute `npm start` to start the development server. This will start a local development server on `localhost:<some_port>`.
 
-# 4. How to run app locally
+# 4. On starting the App
 
 On starting the app, enter valid fabric, tenant, user and password.
 Select the required region.
