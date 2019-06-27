@@ -57,11 +57,16 @@ class App extends Component {
       lastEditElem: null,
       selectedRegionUrl: "",
       selectedRegionName: "",
-      regionModal: true,
+      regionModal: false,
       availableRegions: makeRegionData(Config),
       baseUrl: '',
       wsUrl: '',
-      producerUrl: ''
+      producerUrl: '',
+      loginModal: true,
+      tenant: '',
+      fabric: '',
+      username: '',
+      password: ''
     };
 
     this.onFabPress = this.onFabPress.bind(this);
@@ -85,12 +90,19 @@ class App extends Component {
 
 
   login() {
-    const data = {
+    /*const data = {
       tenant: 'demo',
       username: 'root',
       password: 'demo'
+    }*/
+    const self = this;
+    const data = {
+      tenant: this.state.tenant,
+      username: this.state.username,
+      password: this.state.password
+
     }
-    const url = `https://${this.state.selectedRegionUrl}/_tenant/_mm/_fabric/_system/_open/auth`;
+    const url = `https://${this.state.selectedRegionUrl}/_tenant/${this.state.tenant}/_fabric/${this.state.fabric}/_open/auth`;
     $.ajax({
       url,
       method: 'POST',
@@ -100,7 +112,10 @@ class App extends Component {
         this.jwtToken = data.jwt;
         this.ajaxSetup();
         this.saveQueries();
-        this.createCollection();
+        var collection = this.createCollection();
+        $.when(collection).done(function (r1) {
+         self.sleep(3000);
+        });
       },
       error: () => this.handleSnackbar("Auth failed.")
     })
@@ -114,40 +129,43 @@ class App extends Component {
     });
   }
 
-  createCollection(){
+  createCollection() {
     const self = this;
     let exist = false;
-    let url = `https://${this.state.selectedRegionUrl}/_tenant/demo/_fabric/_system/collection`;
-    $.ajax({
+    let url = `https://${this.state.selectedRegionUrl}/_tenant/${this.state.tenant}/_fabric/${this.state.fabric}/collection`;
+     return $.ajax({
       type: "GET",
       contentType: 'text/plain',
       processData: false,
       cache: false,
       url,
-      success:function(data)
-        {
-          let collList = data.result;
-          for(let i = 0; i < collList.length; i++){
-            if("addresses" === collList[i].name){
-                exist = true;
-                console.log("Collection exists");
-                break;
-            }
-            else{
-              exist = false;
-            }
+      success: function (data) {
+        let collList = data.result;
+        for (let i = 0; i < collList.length; i++) {
+          if ("addresses" === collList[i].name) {
+            exist = true;
+            console.log("Collection exists");
+            break;
           }
-          if (exist === false){
-            self.collection();
+          else {
+            exist = false;
           }
-        }  
+        }
+        if (exist === false) {
+          self.collection();
+        }
+      }
     });
-  
+
   }
- 
-  collection(){
-    let url = `https://${this.state.selectedRegionUrl}/_tenant/demo/_fabric/_system/collection`;
-    $.ajax({
+
+  sleep(ms, resolve) {
+    return new Promise(() => setTimeout(resolve, ms));
+  }
+
+  collection() {
+    let url = `https://${this.state.selectedRegionUrl}/_tenant/${this.state.tenant}/_fabric/${this.state.fabric}/collection`;
+     $.ajax({
       type: "POST",
       contentType: 'text/plain',
       processData: false,
@@ -158,12 +176,11 @@ class App extends Component {
           "name": "addresses",
         }
       ),
-      success:function(data)
-        {
-          console.log("Collection Created")
-        }  
-  });
-}
+      success: function (data) {
+        console.log("Collection Created")
+      }
+    });
+  }
 
   saveQueries() {
 
@@ -380,12 +397,12 @@ class App extends Component {
         url = url + "/execute/" + name
         const { lastEditElem: { _key, firstname, lastname, email } } = this.state;
         postData = { "_key": _key, "firstName": firstname, "lastName": lastname, "email": email };
-        data =  JSON.stringify({ "bindVars": postData })
+        data = JSON.stringify({ "bindVars": postData })
         snackbarTextSuccess = 'Contact details updated successfully';
         snackbarTextFail = 'Contact details could not be updated';
       }
-      else{
-        url = `https://${this.state.selectedRegionUrl}/_tenant/demo/_fabric/_system/cursor`;
+      else {
+        url = `https://${this.state.selectedRegionUrl}/_tenant/${this.state.tenant}/_fabric/${this.state.fabric}/cursor`;
       }
       console.log("URL", url)
       $.ajax({
@@ -462,6 +479,7 @@ class App extends Component {
     });
   };
 
+
   renderDialogContent() {
     const { firstname, lastname, email } = (this.state.lastEditElem || {});
     let dialogContent = (
@@ -532,9 +550,9 @@ class App extends Component {
     const { selectedRegionUrl } = this.state;
     this.setState({
       regionModal: false,
-      baseUrl: getBaseUrl(selectedRegionUrl),
-      wsUrl: getWsUrl(selectedRegionUrl),
-      producerUrl: getProducerUrl(selectedRegionUrl)
+      baseUrl: getBaseUrl(selectedRegionUrl, this.state.tenant, this.state.fabric),
+      wsUrl: getWsUrl(selectedRegionUrl, this.state.tenant, this.state.fabric),
+      producerUrl: getProducerUrl(selectedRegionUrl, this.state.tenant, this.state.fabric)
     }, () => {
       this.login();
     });
@@ -575,15 +593,90 @@ class App extends Component {
     )
   }
 
+  renderLoginModal() {
+    let { loginModal } = this.state;
+    return (
+      <Dialog
+        fullWidth
+        open={loginModal}
+      >
+        <DialogTitle id="form-dialog-title"> Enter Tenant and Fabric:</DialogTitle>
+        <DialogContent>
+          <TextField
+            onFocus={() => this.onTextInputFocus("tenant")}
+            style={{ display: 'block' }}
+            label="Tenant"
+            onChange={(event) => {
+              const newtenant = event.target.value;
+              this.setState({ tenant: newtenant });
+            }}
+            margin="normal"
+          />
+          <TextField
+            onFocus={() => this.onTextInputFocus("fabric")}
+            style={{ display: 'block' }}
+            label="Fabric "
+            onChange={(event) => {
+              const newfabric = event.target.value;
+              this.setState({ fabric: newfabric });
+
+            }}
+            margin="normal"
+          />
+
+          <TextField
+            onFocus={() => this.onTextInputFocus("username")}
+            style={{ display: 'block' }}
+            label="User "
+            onChange={(event) => {
+              const user = event.target.value;
+              this.setState({ username: user });
+
+            }}
+            margin="normal"
+          />
+
+          <TextField type='password'
+
+            onFocus={() => this.onTextInputFocus("password")}
+            style={{ display: 'block' }}
+            label="Password "
+            onChange={(event) => {
+              const pass = event.target.value;
+              this.setState({ password: pass });
+
+            }}
+            margin="normal"
+          />
+        </DialogContent>
+
+        <DialogActions>
+          <Button
+            onClick={() => this.setState({
+              loginModal: false,
+              regionModal: true
+            })}
+            size="small" variant="text" color="primary">
+            <span className="actions">CONFIRM</span>
+          </Button>
+        </DialogActions>
+      </Dialog>
+    )
+  }
+
+
   render() {
     const { data, selectedRegionName } = this.state;
 
     return (
       <div className="App">
+
         <header className="App-header">
           <img src={c8dbLogo} alt="logo" style={{ height: '100px' }} />
           <h1 className="App-title">Address book is connected to {selectedRegionName}</h1>
         </header>
+        {this.renderLoginModal()}
+
         {this.renderRegionModal()}
         <Paper>
           <Table>

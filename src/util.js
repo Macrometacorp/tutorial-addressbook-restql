@@ -22,11 +22,11 @@ export const addOrUpdateUtil = (payload, data) => {
     return newData;
 }
 
-export const getBaseUrl = url => `https://${url}/_tenant/demo/_fabric/_system/restql`;
+export const getBaseUrl = (url, tenant, fabric) => `https://${url}/_tenant/${tenant}/_fabric/${fabric}/restql`;
 
-export const getWsUrl = url => `wss://${url}/_ws/ws/v2/consumer/persistent/demo/c8local._system/addresses/${getRandomInt()}`;
+export const getWsUrl =(url, tenant, fabric) => `wss://${url}/_ws/ws/v2/consumer/persistent/${tenant}/c8local.${fabric}/addresses/${getRandomInt()}`;
 
-export const getProducerUrl = url => `wss://${url}/_ws/ws/v2/producer/persistent/demo/c8local._system/addresses`;
+export const getProducerUrl = (url, tenant, fabric) => `wss://${url}/_ws/ws/v2/producer/persistent/${tenant}/c8local.${fabric}/addresses`;
 
 export const makeRegionData = config => {
     const keys = Object.keys(config);
