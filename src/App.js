@@ -27,11 +27,11 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Config from './Config';
 
 import {
-  deleteUtil,
-  addOrUpdateUtil,
+  //deleteUtil,
+  //addOrUpdateUtil,
   getBaseUrl,
-  getWsUrl,
-  getProducerUrl,
+  //getWsUrl,
+  //getProducerUrl,
   makeRegionData
 } from "./util";
 
@@ -75,7 +75,7 @@ class App extends Component {
     this.resetModalData = this.resetModalData.bind(this);
     this.fetchData = this.fetchData.bind(this);
     this.onTextInputFocus = this.onTextInputFocus.bind(this);
-    this.onSocketMessageReceived = this.onSocketMessageReceived.bind(this);
+    //this.onSocketMessageReceived = this.onSocketMessageReceived.bind(this);
     this.connection = undefined;
     this.producer = undefined;
     this.jwtToken = undefined;
@@ -115,6 +115,7 @@ class App extends Component {
         var collection = this.createCollection();
         $.when(collection).done(function (r1) {
          self.sleep(3000);
+         self.fetchData();
         });
       },
       error: () => this.handleSnackbar("Auth failed.")
@@ -252,7 +253,7 @@ class App extends Component {
     });
 
     $.when(readQuery, updateQuery, removeQuery).done(function (r1, r2, r3) {
-      self.initWebSocket();
+      //self.initWebSocket();
       self.fetchData();
     });
 
@@ -269,7 +270,7 @@ class App extends Component {
     this.connection.onerror = () => console.log("Failed to establish WS connection");
 
     this.connection.onclose = () => console.log("Closing WS connection");
-
+    
     this.producer = new WebSocket(producerUrl);
 
     this.producer.onopen = () => {
@@ -280,14 +281,15 @@ class App extends Component {
 
   }
 
+  /*
   deleteData(key) {
     this.setState({ data: deleteUtil(key, this.state.data) });
   }
 
   addOrUpdateData(payload) {
     this.setState({ data: addOrUpdateUtil(payload, this.state.data) });
-  }
-
+  }*/
+/*
   onSocketMessageReceived(message) {
     var receiveMsg = JSON.parse(message.data);
     const ackMsg = { "messageId": receiveMsg.messageId };
@@ -296,14 +298,14 @@ class App extends Component {
       const payload = JSON.parse(atob(receiveMsg.payload));
       payload._delete ? this.deleteData(payload._key) : this.addOrUpdateData(payload);
     }
-  }
+  }*/
 
   fetchData(isDialog) {
     var self = this;
     let { baseUrl: url } = this.state;
     url = url + "/execute/Read"
-    this.setState({ isLoading: true }, () => {
-      $.ajax({
+    this.setState({ isLoading: false }, () => {
+      return $.ajax({
         type: "POST",
         contentType: 'text/plain',
         processData: false,
@@ -316,6 +318,12 @@ class App extends Component {
             isLoading: false,
             data: data.result
           });
+          var res = self.fetchData();
+          $.when(res).done(function (r1) {
+            self.sleep(10000);
+          });
+      
+
         },
         error: function (data) {
           if (isDialog) {
@@ -415,6 +423,7 @@ class App extends Component {
         success: function () {
           self.handleSnackbar(snackbarTextSuccess);
           self.resetModalData();
+          self.fetchData();
         },
         error: function (data) {
           self.handleSnackbar(snackbarTextFail);
@@ -460,6 +469,7 @@ class App extends Component {
           success: function () {
             self.handleSnackbar("Contact details removed successfully");
             self.resetModalData();
+            self.fetchData();
           },
           error: function (data) {
             self.handleSnackbar("Contact details could not be removed");
@@ -551,8 +561,8 @@ class App extends Component {
     this.setState({
       regionModal: false,
       baseUrl: getBaseUrl(selectedRegionUrl, this.state.tenant, this.state.fabric),
-      wsUrl: getWsUrl(selectedRegionUrl, this.state.tenant, this.state.fabric),
-      producerUrl: getProducerUrl(selectedRegionUrl, this.state.tenant, this.state.fabric)
+      //wsUrl: getWsUrl(selectedRegionUrl, this.state.tenant, this.state.fabric),
+      //producerUrl: getProducerUrl(selectedRegionUrl, this.state.tenant, this.state.fabric)
     }, () => {
       this.login();
     });
