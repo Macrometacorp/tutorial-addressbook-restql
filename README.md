@@ -1,13 +1,18 @@
+# Global Address Book
 
-# 1. Overview
+## 1. Overview
 
-This page is just for development purposes. **Don't use these steps to deploy the actual application.**
+Demo to show a real-time adrressbook for three different regions using the saved queries/ restql functionality of c8db.
 
-Demo to show custom C8Fn and real-time capabilities of C8.
 
-# 2. Prerequisites
+## 2.Pre-requisites
 
-The following have to be present in the federation before starting the UI or else the network calls will fail crashing the app.
+Pull latest `tutorial-addressbook-streams` code.
+
+Update the regions of your federation in the Config file
+
+
+## 3. How to Run app locally.
 
 The federation url has to be provided in `Config.js` file. The user will then be asked to select one of the following regions in the GUI.
 
@@ -20,21 +25,50 @@ const Config = {
 }
 ```
 
-If need arises this can be changed to have a env variable which can be provided at runtime.
+Once in the root level of the GUI (same as `package.json`), execute `npm install` if the `node_modules` folder is not present and then `npm start` to run the server locally.
+Enter the tenant name, fabric name and credentials on the UI.
+
+## 4. How to deploy app on s3
+
+The federation url has to be provided in `Config.js` file. The user will then be asked to select one of the following regions in the GUI.
 
 ```js
 const Config = {
-    global: process.env.REACT_APP_CLUSTER,
+    global: "demo1.demo.aws.macrometa.io",
+    ashburn: "demo1-us-west-1.demo.aws.macrometa.io",
+    dublin: "demo1-eu-west-1.demo.aws.macrometa.io",
+    incheon: "demo1-ap-northeast-2.demo.aws.macrometa.io"
 }
 ```
 
-# 3. How to run app locally
+Once in the root level of the GUI (same as `package.json`), execute `npm install` if the `node_modules` folder is not present and then `npm run build`. This will create an optimized production build of the application.
 
-If `node_modules` is not there, execute `npm install`.
+After it executes to completion, there will be a new folder named `build` in the root level.
 
-Once all the node modules have been installed execute `npm start` to start the development server. This will start a local development server on `localhost:<some_port>`.
+The contents of this `build` folder need to be copied to the S3 bucket.
 
-# 4. On starting the App
+If using aws cli run `aws s3 cp build s3://<your-s3-bucket-name> --recursive` to recursively copy all files and folders inside the `build` folder to the S3 bucket.
 
-On starting the app, enter valid fabric, tenant, user and password.
-Select the required region.
+The bucket needs to be public in order for the website to be visible.
+A sample `bucket policy` is:
+
+```js
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "PublicReadGetObject",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::<your-s3-bucket-name>/*"
+        }
+    ]
+}
+```
+
+Now goto the `Properties` tab in the aws console for this bucket and open `Static website hosting` option. In there select the option `Use this bucket to host a website` and provide `index.html` for both `Index document` and `Error document` text fields. Click on save and the website is now live!
+
+## 5. Already deployed demo
+
+Go to `http://try.macrometa.addressbook-rest.s3-website.us-east-2.amazonaws.com/` login with your tenant, fabric and credentials and start adding contacts.
