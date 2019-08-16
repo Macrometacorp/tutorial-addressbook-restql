@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@material-ui/core": "^3.6.2",
+    "ccxt": "^1.18.996",
     "jquery": "^3.3.1",
     "jsc8": "^0.12.2",
     "lodash": "^4.17.11",

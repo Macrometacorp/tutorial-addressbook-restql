@@ -63,13 +63,13 @@ class App extends Component {
       wsUrl: '',
       producerUrl: '',
       loginModal: true,
-      tenant: '',
-      fabric: '',
-      username: '',
-      password: ''
+      tenant: 'demo',
+      fabric: '_system',
+      username: 'root',
+      password: 'demo'
     };
 
-    this.onFabPress = this.onFabPress.bind(this);
+    this.onFabPressed = this.onFabPressed.bind(this);
     this.handleFormChange = this.handleFormChange.bind(this);
     this.onSavePressed = this.onSavePressed.bind(this);
     this.resetModalData = this.resetModalData.bind(this);
@@ -84,8 +84,8 @@ class App extends Component {
 
 
   componentWillUnmount() {
-    this.connection.close();
-    this.producer.close();
+    //this.connection.close();
+    //this.producer.close();
   }
 
 
@@ -313,7 +313,7 @@ class App extends Component {
         url,
         data: JSON.stringify({}),
         success: function (data) {
-          self.resetModalData();
+          // self.resetModalData();
           self.setState({
             isLoading: false,
             data: data.result
@@ -327,7 +327,7 @@ class App extends Component {
         },
         error: function (data) {
           if (isDialog) {
-            self.resetModalData();
+            // self.resetModalData();
           }
           self.setState({
             isLoading: false,
@@ -339,11 +339,13 @@ class App extends Component {
     });
   }
 
-  onFabPress() {
+  onFabPressed() {
     this.setState({ shouldShowModal: true })
   }
 
   resetModalData() {
+    console.log(this.state.shouldShowModal);
+    
     this.setState({
       lastEditElem: undefined,
       shouldShowModal: false,
@@ -616,6 +618,7 @@ class App extends Component {
             onFocus={() => this.onTextInputFocus("tenant")}
             style={{ display: 'block' }}
             label="Tenant"
+            defaultValue = {this.state.tenant}
             onChange={(event) => {
               const newtenant = event.target.value;
               this.setState({ tenant: newtenant });
@@ -626,6 +629,7 @@ class App extends Component {
             onFocus={() => this.onTextInputFocus("fabric")}
             style={{ display: 'block' }}
             label="Fabric "
+            defaultValue = {this.state.fabric}
             onChange={(event) => {
               const newfabric = event.target.value;
               this.setState({ fabric: newfabric });
@@ -638,6 +642,7 @@ class App extends Component {
             onFocus={() => this.onTextInputFocus("username")}
             style={{ display: 'block' }}
             label="User "
+            defaultValue = {this.state.username}
             onChange={(event) => {
               const user = event.target.value;
               this.setState({ username: user });
@@ -651,6 +656,7 @@ class App extends Component {
             onFocus={() => this.onTextInputFocus("password")}
             style={{ display: 'block' }}
             label="Password "
+            defaultValue = {this.state.password}
             onChange={(event) => {
               const pass = event.target.value;
               this.setState({ password: pass });
@@ -680,13 +686,11 @@ class App extends Component {
 
     return (
       <div className="App">
-
         <header className="App-header">
           <img src={c8dbLogo} alt="logo" style={{ height: '100px' }} />
           <h1 className="App-title">Address book is connected to {selectedRegionName}</h1>
         </header>
         {this.renderLoginModal()}
-
         {this.renderRegionModal()}
         <Paper>
           <Table>
@@ -730,7 +734,7 @@ class App extends Component {
           </Table>
         </Paper>
         <Fab
-          onClick={this.onFabPress}
+          onClick={this.onFabPressed}
           style={{ position: 'fixed', bottom: '70px', right: '70px' }} size="large" color="primary">
           <span style={{ fontSize: "30px" }}>+</span>
         </Fab>
@@ -738,7 +742,10 @@ class App extends Component {
         <Dialog
           onClose={this.resetModalData}
           open={this.state.shouldShowModal}
+          
         >
+
+          <h1>{ this.state.shouldShowModal }</h1>
           <DialogTitle id="form-dialog-title">{this.state.isEdit ? 'Edit contact details' : 'Add contact details'}</DialogTitle>
           {this.renderDialogContent()}
           <DialogActions>
