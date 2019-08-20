@@ -18,11 +18,13 @@ The federation url has to be provided in `Config.js` file. The user will then be
 
 ```js
 const Config = {
-    global: "demo1.demo.aws.macrometa.io",
-    ashburn: "demo1-us-west-1.demo.aws.macrometa.io",
-    dublin: "demo1-eu-west-1.demo.aws.macrometa.io",
-    incheon: "demo1-ap-northeast-2.demo.aws.macrometa.io"
+    global: "try.macrometa.io",
+    Dalles: "try1-us-west1.prod.macrometa.io",
+    Ashburn: "try1-us-east4.prod.macrometa.io",
+    Frankfurt: "try1-europe-west3.prod.macrometa.io",
+    Mumbai: "try1-asia-south1.prod.macrometa.io"
 }
+
 ```
 
 Once in the root level of the GUI (same as `package.json`), execute `npm install` if the `node_modules` folder is not present and then `npm start` to run the server locally.
@@ -34,11 +36,13 @@ The federation url has to be provided in `Config.js` file. The user will then be
 
 ```js
 const Config = {
-    global: "demo1.demo.aws.macrometa.io",
-    ashburn: "demo1-us-west-1.demo.aws.macrometa.io",
-    dublin: "demo1-eu-west-1.demo.aws.macrometa.io",
-    incheon: "demo1-ap-northeast-2.demo.aws.macrometa.io"
+    global: "try.macrometa.io",
+    Dalles: "try1-us-west1.prod.macrometa.io",
+    Ashburn: "try1-us-east4.prod.macrometa.io",
+    Frankfurt: "try1-europe-west3.prod.macrometa.io",
+    Mumbai: "try1-asia-south1.prod.macrometa.io"
 }
+
 ```
 
 Once in the root level of the GUI (same as `package.json`), execute `npm install` if the `node_modules` folder is not present and then `npm run build`. This will create an optimized production build of the application.
