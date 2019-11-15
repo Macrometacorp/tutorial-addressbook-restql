@@ -3,7 +3,32 @@
 ## 1. Overview
 
 Demo to show a real-time adrressbook for three different regions using the saved queries/ restql functionality of c8db.
+Queries that the demo uses are:-
 
+### 1 . SaveContact
+
+This query takes the parameters firstName, lastName and email as BindVars and inserts the provided data into the collection.
+
+`INSERT {firstname:@firstName,lastname:@lastName,email:@email} INTO addresses`
+
+### 2. ReadContact
+
+This query fetches all the entries in the collection.
+
+`FOR entry IN addresses RETURN entry`
+
+### 3. RemoveContact
+
+This query removes the selected entry from the collection.
+
+`value": "REMOVE @_key IN addresses`
+
+### 4. UpdateContact
+
+This query takes the parameters firstName, lastName and email as BindVars and updates the provided data into the collection.
+
+`UPDATE @_key WITH { firstname:@firstName, lastname:@lastName, email:@email} IN addresses`
+> **_NOTE:_**  The App when started saves these queries, you need not create them manually.
 
 ## 2.Pre-requisites
 
@@ -18,11 +43,11 @@ The federation url has to be provided in `Config.js` file. The user will then be
 
 ```js
 const Config = {
-    global: "try.macrometa.io",
-    Dalles: "try1-us-west1.prod.macrometa.io",
-    Ashburn: "try1-us-east4.prod.macrometa.io",
-    Frankfurt: "try1-europe-west3.prod.macrometa.io",
-    Mumbai: "try1-asia-south1.prod.macrometa.io"
+    global: "gdn1.prod.macrometa.io",
+    Toronto: "gdn1-tor1.prod.macrometa.io",
+    London: "gdn1-lon1.prod.macrometa.io",
+    Bengaluru: "gdn1-blr1.prod.macrometa.io",
+    Singapore: "gdn1-sgp1.prod.macrometa.io"
 }
 
 ```
@@ -36,11 +61,11 @@ The federation url has to be provided in `Config.js` file. The user will then be
 
 ```js
 const Config = {
-    global: "try.macrometa.io",
-    Dalles: "try1-us-west1.prod.macrometa.io",
-    Ashburn: "try1-us-east4.prod.macrometa.io",
-    Frankfurt: "try1-europe-west3.prod.macrometa.io",
-    Mumbai: "try1-asia-south1.prod.macrometa.io"
+    global: "gdn1.prod.macrometa.io",
+    Toronto: "gdn1-tor1.prod.macrometa.io",
+    London: "gdn1-lon1.prod.macrometa.io",
+    Bengaluru: "gdn1-blr1.prod.macrometa.io",
+    Singapore: "gdn1-sgp1.prod.macrometa.io"
 }
 
 ```
@@ -75,4 +100,4 @@ Now goto the `Properties` tab in the aws console for this bucket and open `Stati
 
 ## 5. Already deployed demo
 
-Go to `http://try.macrometa.addressbook-rest.s3-website.us-east-2.amazonaws.com/` login with your tenant, fabric and credentials and start adding contacts.
+Go to `http://addressbook-restql-gdn.s3-website-us-east-1.amazonaws.com/` login with your tenant, fabric and credentials and start adding contacts.

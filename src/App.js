@@ -27,11 +27,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Config from './Config';
 
 import {
-  //deleteUtil,
-  //addOrUpdateUtil,
   getBaseUrl,
-  //getWsUrl,
-  //getProducerUrl,
   makeRegionData
 } from "./util";
 
@@ -64,8 +60,8 @@ class App extends Component {
       producerUrl: '',
       loginModal: true,
       tenant: 'demo',
+      tenantemail: 'demo@macrometa.io',
       fabric: '_system',
-      username: 'root',
       password: 'demo'
     };
 
@@ -75,7 +71,6 @@ class App extends Component {
     this.resetModalData = this.resetModalData.bind(this);
     this.fetchData = this.fetchData.bind(this);
     this.onTextInputFocus = this.onTextInputFocus.bind(this);
-    //this.onSocketMessageReceived = this.onSocketMessageReceived.bind(this);
     this.connection = undefined;
     this.producer = undefined;
     this.jwtToken = undefined;
@@ -83,22 +78,11 @@ class App extends Component {
   }
 
 
-  componentWillUnmount() {
-    //this.connection.close();
-    //this.producer.close();
-  }
-
-
   login() {
-    /*const data = {
-      tenant: 'demo',
-      username: 'root',
-      password: 'demo'
-    }*/
+ 
     const self = this;
     const data = {
-      tenant: this.state.tenant,
-      username: this.state.username,
+      email: this.state.tenantemail,
       password: this.state.password
 
     }
@@ -110,6 +94,7 @@ class App extends Component {
       dataType: 'json',
       success: (data) => {
         this.jwtToken = data.jwt;
+        this.tenant = data.tenant;
         this.ajaxSetup();
         this.saveQueries();
         var collection = this.createCollection();
@@ -196,14 +181,14 @@ class App extends Component {
       url,
       data: JSON.stringify({
         "query": {
-          "name": "Read",
+          "name": "ReadContact",
           "parameter": {},
           "value": "FOR entry IN addresses RETURN entry"
         }
       })
     });
 
-    /*var writeQuery = $.ajax({
+    var writeQuery = $.ajax({
       type: "POST",
       contentType: 'text/plain',
       processData: false,
@@ -211,12 +196,12 @@ class App extends Component {
       url,
       data: JSON.stringify({
         "query": {
-          "name": "Write",
+          "name": "SaveContact",
           "parameter": {},
           "value": "INSERT {firstname:@firstName,lastname:@lastName,email:@email} INTO addresses"
         }
       })
-    });*/
+    });
 
     var removeQuery = $.ajax({
       type: "POST",
@@ -226,7 +211,7 @@ class App extends Component {
       url,
       data: JSON.stringify({
         "query": {
-          "name": "Remove",
+          "name": "RemoveContact",
           "parameter": {},
           "value": "REMOVE @_key IN addresses"
         }
@@ -244,7 +229,7 @@ class App extends Component {
       url,
       data: JSON.stringify({
         "query": {
-          "name": "Update",
+          "name": "UpdateContact",
           "parameter": {},
           "value": "UPDATE @_key WITH { firstname:@firstName, lastname:@lastName, email:@email} IN addresses"
         }
@@ -252,8 +237,7 @@ class App extends Component {
       )
     });
 
-    $.when(readQuery, updateQuery, removeQuery).done(function (r1, r2, r3) {
-      //self.initWebSocket();
+    $.when(readQuery, updateQuery, removeQuery, writeQuery).done(function (r1, r2, r3) {
       self.fetchData();
     });
 
@@ -281,29 +265,11 @@ class App extends Component {
 
   }
 
-  /*
-  deleteData(key) {
-    this.setState({ data: deleteUtil(key, this.state.data) });
-  }
-
-  addOrUpdateData(payload) {
-    this.setState({ data: addOrUpdateUtil(payload, this.state.data) });
-  }*/
-/*
-  onSocketMessageReceived(message) {
-    var receiveMsg = JSON.parse(message.data);
-    const ackMsg = { "messageId": receiveMsg.messageId };
-    this.connection.send(JSON.stringify(ackMsg));
-    if (receiveMsg.payload !== 'noop') {
-      const payload = JSON.parse(atob(receiveMsg.payload));
-      payload._delete ? this.deleteData(payload._key) : this.addOrUpdateData(payload);
-    }
-  }*/
 
   fetchData(isDialog) {
     var self = this;
     let { baseUrl: url } = this.state;
-    url = url + "/execute/Read"
+    url = url + "/execute/ReadContact"
     this.setState({ isLoading: false }, () => {
       return $.ajax({
         type: "POST",
@@ -313,7 +279,6 @@ class App extends Component {
         url,
         data: JSON.stringify({}),
         success: function (data) {
-          // self.resetModalData();
           self.setState({
             isLoading: false,
             data: data.result
@@ -327,7 +292,7 @@ class App extends Component {
         },
         error: function (data) {
           if (isDialog) {
-            // self.resetModalData();
+            self.resetModalData();
           }
           self.setState({
             isLoading: false,
@@ -398,12 +363,15 @@ class App extends Component {
       let snackbarTextSuccess = 'Contact details added successfully';
       let snackbarTextFail = 'Contact details could not be added';
       const { firstName, lastName, emailAddress, isEdit } = this.state;
-      let name = "Write";
-      let postData = `INSERT { "firstname":"${firstName}", "lastname":"${lastName}", "email":"${emailAddress}" } INTO addresses`;
-      let data = JSON.stringify({ "query": postData })
+      let name = "SaveContact";
+      let postData = { "firstName": firstName, "lastName": lastName, "email": emailAddress };
+      let data = JSON.stringify({ "bindVars": postData })
+
+      //let postData = `INSERT { "firstname":"${firstName}", "lastname":"${lastName}", "email":"${emailAddress}" } INTO addresses`;
+      //let data = JSON.stringify({ "query": postData })
       //let postData = { "firstName": firstName, "lastName": lastName, "email": emailAddress };
       if (isEdit) {
-        name = "Update";
+        name = "UpdateContact";
         url = url + "/execute/" + name
         const { lastEditElem: { _key, firstname, lastname, email } } = this.state;
         postData = { "_key": _key, "firstName": firstname, "lastName": lastname, "email": email };
@@ -412,7 +380,11 @@ class App extends Component {
         snackbarTextFail = 'Contact details could not be updated';
       }
       else {
-        url = `https://${this.state.selectedRegionUrl}/_tenant/${this.state.tenant}/_fabric/${this.state.fabric}/cursor`;
+        name = "SaveContact";
+        url = url + "/execute/" + name
+        snackbarTextSuccess = 'Contact details added successfully';
+        snackbarTextFail = 'Contact details could not be added';
+        //url = `https://${this.state.selectedRegionUrl}/_tenant/${this.state.tenant}/_fabric/${this.state.fabric}/cursor`;
       }
       console.log("URL", url)
       $.ajax({
@@ -457,7 +429,7 @@ class App extends Component {
   onRemovePressed(element) {
     const self = this;
     let { baseUrl: url } = this.state;
-    url = url + "/execute/Remove"
+    url = url + "/execute/RemoveContact"
     let postData = `{"_key": "${element._key}"}`
     if (element) {
       this.setState({ lastEditElem: element }, () => {
@@ -615,10 +587,10 @@ class App extends Component {
         <DialogTitle id="form-dialog-title"> Enter Tenant and Fabric:</DialogTitle>
         <DialogContent>
           <TextField
-            onFocus={() => this.onTextInputFocus("tenant")}
+            onFocus={() => this.onTextInputFocus("tenantemail")}
             style={{ display: 'block' }}
-            label="Tenant"
-            defaultValue = {this.state.tenant}
+            label="Tenant Email"
+            defaultValue = {this.state.tenantemail}
             onChange={(event) => {
               const newtenant = event.target.value;
               this.setState({ tenant: newtenant });
@@ -638,18 +610,6 @@ class App extends Component {
             margin="normal"
           />
 
-          <TextField
-            onFocus={() => this.onTextInputFocus("username")}
-            style={{ display: 'block' }}
-            label="User "
-            defaultValue = {this.state.username}
-            onChange={(event) => {
-              const user = event.target.value;
-              this.setState({ username: user });
-
-            }}
-            margin="normal"
-          />
 
           <TextField type='password'
 
