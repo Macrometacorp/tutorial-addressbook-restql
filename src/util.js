@@ -22,7 +22,7 @@ export const addOrUpdateUtil = (payload, data) => {
     return newData;
 }
 
-export const getBaseUrl = (url, tenant, fabric) => `https://${url}/_tenant/${tenant}/_fabric/${fabric}/restql`;
+export const getBaseUrl = (url, tenant, fabric) => `https://api-${url}/_tenant/${tenant}/_fabric/${fabric}/restql`;
 
 //export const getWsUrl =(url, tenant, fabric) => `wss://${url}/_ws/ws/v2/consumer/persistent/${tenant}/c8local.${fabric}/addresses/${getRandomInt()}`;
 

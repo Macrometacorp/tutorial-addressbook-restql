@@ -86,7 +86,7 @@ class App extends Component {
       password: this.state.password
 
     }
-    const url = `https://${this.state.selectedRegionUrl}/_tenant/${this.state.tenant}/_fabric/${this.state.fabric}/_open/auth`;
+    const url = `https://api-${this.state.selectedRegionUrl}/_open/auth`;
     $.ajax({
       url,
       method: 'POST',
@@ -118,7 +118,7 @@ class App extends Component {
   createCollection() {
     const self = this;
     let exist = false;
-    let url = `https://${this.state.selectedRegionUrl}/_tenant/${this.state.tenant}/_fabric/${this.state.fabric}/collection`;
+    let url = `https://api-${this.state.selectedRegionUrl}/_tenant/${this.state.tenant}/_fabric/${this.state.fabric}/collection`;
      return $.ajax({
       type: "GET",
       contentType: 'text/plain',
@@ -150,7 +150,7 @@ class App extends Component {
   }
 
   collection() {
-    let url = `https://${this.state.selectedRegionUrl}/_tenant/${this.state.tenant}/_fabric/${this.state.fabric}/collection`;
+    let url = `https://api-${this.state.selectedRegionUrl}/_tenant/${this.state.tenant}/_fabric/${this.state.fabric}/collection`;
      $.ajax({
       type: "POST",
       contentType: 'text/plain',
@@ -279,16 +279,14 @@ class App extends Component {
         url,
         data: JSON.stringify({}),
         success: function (data) {
+          self.resetModalData();
           self.setState({
             isLoading: false,
             data: data.result
           });
-          var res = self.fetchData();
-          $.when(res).done(function (r1) {
-            self.sleep(10000);
-          });
-      
-
+          
+          setTimeout(self.fetchData,10000);
+          
         },
         error: function (data) {
           if (isDialog) {
