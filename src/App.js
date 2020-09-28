@@ -279,7 +279,9 @@ class App extends Component {
         url,
         data: JSON.stringify({}),
         success: function (data) {
-          self.resetModalData();
+          if (!self.state.shouldShowModal) {
+            self.resetModalData();
+          }
           self.setState({
             isLoading: false,
             data: data.result
