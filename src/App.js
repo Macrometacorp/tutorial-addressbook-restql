@@ -57,7 +57,7 @@ class App extends Component {
       loginModal: true,
       tenant: "xxxx",
       tenantemail: "xxxx@macrometa.io",
-      fabric: "_system",
+      fabric: "xxxx",
       password: "xxxx",
     };
 
