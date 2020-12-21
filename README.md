@@ -61,11 +61,13 @@ The federation url has to be provided in `Config.js` file. The user will then be
 
 ```js
 const Config = {
-    global: "gdn1.prod.macrometa.io",
-    Toronto: "gdn1-tor1.prod.macrometa.io",
-    London: "gdn1-lon1.prod.macrometa.io",
-    Bengaluru: "gdn1-blr1.prod.macrometa.io",
-    Singapore: "gdn1-sgp1.prod.macrometa.io"
+  global: "gdn.paas.prod.macrometa.io",
+  Fremont: "gdn-us-west.paas.macrometa.io",
+  London: "gdn-eu-west.paas.macrometa.io",
+  Mumbai: "gdn-ap-west.paas.macrometa.io",
+  Singapore: "gdn-ap-south.paas.macrometa.io",
+  Tokyo: "gdn-ap-northeast.paas.macrometa.io",
+  Sydney: "gdn-ap-sydney.paas.macrometa.io"
 }
 
 ```
