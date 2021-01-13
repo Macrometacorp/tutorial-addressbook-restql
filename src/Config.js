@@ -1,5 +1,5 @@
 const Config = {
-  global: "gdn.paas.prod.macrometa.io",
+  global: "gdn.paas.macrometa.io",
   Fremont: "gdn-us-west.paas.macrometa.io",
   London: "gdn-eu-west.paas.macrometa.io",
   Mumbai: "gdn-ap-west.paas.macrometa.io",
