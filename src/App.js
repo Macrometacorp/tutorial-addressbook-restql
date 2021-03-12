@@ -604,13 +604,14 @@ class App extends Component {
       <Dialog fullWidth open={loginModal}>
         <DialogTitle id="form-dialog-title">
           {" "}
-          Log in to your Macrometa account:
+          Log in using the defaults or with your Macrometa account:
         </DialogTitle>
         <DialogContent>
           <TextField
             onFocus={() => this.onTextInputFocus("tenantemail")}
             style={{ display: "block" }}
             label="Email"
+            defaultValue={this.state.email}
             onChange={(event) => {
               const newtenant = event.target.value;
               this.setState({ tenantemail: newtenant });
@@ -634,6 +635,7 @@ class App extends Component {
             onFocus={() => this.onTextInputFocus("password")}
             style={{ display: "block" }}
             label="Password "
+            defaultValue={this.state.password}
             onChange={(event) => {
               const pass = event.target.value;
               this.setState({ password: pass });
