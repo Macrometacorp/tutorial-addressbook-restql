@@ -2,39 +2,9 @@
 
 ## 1. Overview
 
-Demo to show a real-time adrressbook for three different regions using the saved queries/ restql functionality of c8db.
-Queries that the demo uses are:-
+Demo to show a real-time adrressbook for three different regions using the Query Workers functionality of c8db.
 
-### 1 . SaveContact
-
-This query takes the parameters firstName, lastName and email as BindVars and inserts the provided data into the collection.
-
-`INSERT {firstname:@firstName,lastname:@lastName,email:@email} INTO addresses`
-
-### 2. ReadContact
-
-This query fetches all the entries in the collection.
-
-`FOR entry IN addresses RETURN entry`
-
-### 3. RemoveContact
-
-This query removes the selected entry from the collection.
-
-`value": "REMOVE @_key IN addresses`
-
-### 4. UpdateContact
-
-This query takes the parameters firstName, lastName and email as BindVars and updates the provided data into the collection.
-
-`UPDATE @_key WITH { firstname:@firstName, lastname:@lastName, email:@email} IN addresses`
-> **_NOTE:_**  The App when started saves these queries, you need not create them manually.
-
-## 2.Pre-requisites
-
-Pull latest `tutorial-addressbook-streams` code.
-
-Update the regions of your federation in the Config file
+Make sure and [follow this tutorial](https://macrometa.dev/demos/address-book/) before you complete the rest of these steps.
 
 
 ## 3. How to Run app locally.
@@ -43,11 +13,13 @@ The federation url has to be provided in `Config.js` file. The user will then be
 
 ```js
 const Config = {
-    global: "gdn1.prod.macrometa.io",
-    Toronto: "gdn1-tor1.prod.macrometa.io",
-    London: "gdn1-lon1.prod.macrometa.io",
-    Bengaluru: "gdn1-blr1.prod.macrometa.io",
-    Singapore: "gdn1-sgp1.prod.macrometa.io"
+  global: "gdn.paas.prod.macrometa.io",
+  Fremont: "gdn-us-west.paas.macrometa.io",
+  London: "gdn-eu-west.paas.macrometa.io",
+  Mumbai: "gdn-ap-west.paas.macrometa.io",
+  Singapore: "gdn-ap-south.paas.macrometa.io",
+  Tokyo: "gdn-ap-northeast.paas.macrometa.io",
+  Sydney: "gdn-ap-sydney.paas.macrometa.io"
 }
 
 ```
@@ -100,6 +72,6 @@ A sample `bucket policy` is:
 
 Now goto the `Properties` tab in the aws console for this bucket and open `Static website hosting` option. In there select the option `Use this bucket to host a website` and provide `index.html` for both `Index document` and `Error document` text fields. Click on save and the website is now live!
 
-## 5. Already deployed demo
+## Check out this already deployed demo
 
 Go to `http://addressbook-restql-gdn.s3-website-us-east-1.amazonaws.com/` login with your tenant, fabric and credentials and start adding contacts.
