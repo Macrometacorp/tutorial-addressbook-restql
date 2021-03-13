@@ -611,7 +611,7 @@ class App extends Component {
             onFocus={() => this.onTextInputFocus("tenantemail")}
             style={{ display: "block" }}
             label="Email"
-            defaultValue={this.state.email}
+            defaultValue={this.state.tenantemail}
             onChange={(event) => {
               const newtenant = event.target.value;
               this.setState({ tenantemail: newtenant });
