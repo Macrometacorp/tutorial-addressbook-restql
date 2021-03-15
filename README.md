@@ -13,7 +13,7 @@ The federation url has to be provided in `Config.js` file. The user will then be
 
 ```js
 const Config = {
-  global: "gdn.paas.prod.macrometa.io",
+  global: "gdn.paas.macrometa.io",
   Fremont: "gdn-us-west.paas.macrometa.io",
   London: "gdn-eu-west.paas.macrometa.io",
   Mumbai: "gdn-ap-west.paas.macrometa.io",
@@ -33,7 +33,7 @@ The federation url has to be provided in `Config.js` file. The user will then be
 
 ```js
 const Config = {
-  global: "gdn.paas.prod.macrometa.io",
+  global: "gdn.paas.macrometa.io",
   Fremont: "gdn-us-west.paas.macrometa.io",
   London: "gdn-eu-west.paas.macrometa.io",
   Mumbai: "gdn-ap-west.paas.macrometa.io",
