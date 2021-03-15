@@ -57,7 +57,7 @@ class App extends Component {
       loginModal: true,
       tenant: "xxxx",
       tenantemail: "xxxx@macrometa.io",
-      fabric: "xxxx",
+      fabric: "_system",
       password: "xxxx",
     };
 
@@ -604,13 +604,13 @@ class App extends Component {
       <Dialog fullWidth open={loginModal}>
         <DialogTitle id="form-dialog-title">
           {" "}
-          Enter Tenant and Fabric:
+          Log in using the defaults or with your Macrometa account:
         </DialogTitle>
         <DialogContent>
           <TextField
             onFocus={() => this.onTextInputFocus("tenantemail")}
             style={{ display: "block" }}
-            label="Tenant Email"
+            label="Email"
             defaultValue={this.state.tenantemail}
             onChange={(event) => {
               const newtenant = event.target.value;

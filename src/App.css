@@ -3,7 +3,7 @@
 }
 
 .App-header {
-  background-color: #847c7c;
+  background-color: #338DCC;
   height: 150px;
   padding: 20px;
   color: black;
@@ -11,7 +11,7 @@
 
 .App-title {
   font-size: 1.5em;
-  color: black;
+  color: white;
 }
 
 input {
