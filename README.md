@@ -2,7 +2,7 @@
 
 ### Live Demo: https://macrometacorp.github.io/tutorial-addressbook-restql/
 
-Demo to show a Real-time adrress book!
+Demo to show a real-time address book!
 
 ## Setup
 
@@ -16,7 +16,7 @@ Demo to show a Real-time adrress book!
 
 ![dashboard.png](dashboard.png)
 
-### Macrometa Account setup
+### Macrometa Account Setup
 
 1. On the development machine, run the following commands in a console:
 
