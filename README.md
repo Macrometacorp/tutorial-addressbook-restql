@@ -8,7 +8,7 @@ Demo to show a real-time address book!
 
 | **Federation**                                        | **Email**          | **Passsword** |
 | ----------------------------------------------------- | ------------------ | ------------- |
-| [Global Data Network](https://gdn.paas.macrometa.io/) | demo@macrometa.com | `xxxxxxxx`    |
+| [Global Data Network](https://play.macrometa.io/) | demo@macrometa.com | `xxxxxxxx`    |
 
 ## Overview
 
@@ -28,7 +28,7 @@ Demo to show a real-time address book!
 5. npm run start
 ```
 
-2. Rename `.env.sample` to `.env` and update the `REACT_APP_GDN_URL` with `https://gdn.paas.macrometa.io`
+2. Rename `.env.sample` to `.env` and update the `REACT_APP_GDN_URL` with `https://play.macrometa.io`
 
 3. Once you have the app running, you will be presented with a page to log in with your Macrometa account. Add your Macrometa account email and password and the user will then be asked to select one region in the GUI.
 
