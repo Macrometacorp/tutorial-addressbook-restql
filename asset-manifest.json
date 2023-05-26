@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/tutorial-addressbook-restql/static/css/main.e6c13ad2.css",
-    "main.js": "/tutorial-addressbook-restql/static/js/main.f045e3f2.js",
+    "main.js": "/tutorial-addressbook-restql/static/js/main.901335cf.js",
     "static/js/787.7694c8bb.chunk.js": "/tutorial-addressbook-restql/static/js/787.7694c8bb.chunk.js",
     "index.html": "/tutorial-addressbook-restql/index.html",
     "main.e6c13ad2.css.map": "/tutorial-addressbook-restql/static/css/main.e6c13ad2.css.map",
-    "main.f045e3f2.js.map": "/tutorial-addressbook-restql/static/js/main.f045e3f2.js.map",
+    "main.901335cf.js.map": "/tutorial-addressbook-restql/static/js/main.901335cf.js.map",
     "787.7694c8bb.chunk.js.map": "/tutorial-addressbook-restql/static/js/787.7694c8bb.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e6c13ad2.css",
-    "static/js/main.f045e3f2.js"
+    "static/js/main.901335cf.js"
   ]
 }
