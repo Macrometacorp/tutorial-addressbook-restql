@@ -1,4 +1,5 @@
 const GDN_URL = process.env.REACT_APP_GDN_URL
+const GDN_FABRIC = process.env.REACT_APP_GDN_FABRIC
 const GITHUB_URL = process.env.REACT_APP_GITHUB_URL
 const DEMO_HEADING = "Address Book"
 const DEFAULT_USERNAME = "demo@macrometa.io"
@@ -52,5 +53,6 @@ export {
     EMAIL_VALIDATION_REGEX,
     GITHUB_URL,
     GDN_URL,
+    GDN_FABRIC,
     RESTQL,
 }

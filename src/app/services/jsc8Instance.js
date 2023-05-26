@@ -1,10 +1,10 @@
 import jsC8 from "jsc8"
-import { GDN_URL } from "../../util/constants"
+import { GDN_URL, GDN_FABRIC } from "../../util/constants"
 
 let client
 
-const initClient = (url = GDN_URL, token = "") => {
-    client = new jsC8({ url, token })
+const initClient = (url = GDN_URL, fabricName = GDN_FABRIC, token = "") => {
+    client = new jsC8({ url, fabricName, token })
 }
 
 const getInstance = () => {
@@ -15,8 +15,8 @@ const getInstance = () => {
     return client
 }
 
-const reInitClient = (gdnUrl, bearerToken) => {
-    initClient(gdnUrl, bearerToken)
+const reInitClient = (gdnUrl, fabricName, bearerToken) => {
+    initClient(gdnUrl, fabricName, bearerToken)
 }
 
 export { getInstance, reInitClient }

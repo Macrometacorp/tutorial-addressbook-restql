@@ -42,7 +42,7 @@ const SelectRegion = () => {
                 gdnUrl: _dc.url,
             }
         })
-        await reInitClient(_dc.url, jsc8Config.bearerToken)
+        await reInitClient(_dc.url, jsc8Config.fabric, jsc8Config.bearerToken)
         updateAppConfig("selectedRegion", _dc.location)
         updateAppConfig("showSelectDataCenter", false)
     }
